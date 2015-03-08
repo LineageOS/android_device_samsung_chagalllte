@@ -1,7 +1,7 @@
 [
     {
-        "repository": "android_kernel_samsung_chagallwifi",
-        "target_path": "kernel/samsung/chagallwifi"
+        "repository": "android_kernel_samsung_chagalllte",
+        "target_path": "kernel/samsung/chagalllte"
     },
     {
         "repository": "android_packages_apps_SamsungServiceMode",

@@ -14,12 +14,12 @@
 # limitations under the License.
 #
 
-LOCAL_PATH := device/samsung/chagallwifi
+LOCAL_PATH := device/samsung/chagalllte
 
 $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 
 PRODUCT_CHARACTERISTICS := tablet
-DEVICE_PACKAGE_OVERLAYS += device/samsung/chagallwifi/overlay
+DEVICE_PACKAGE_OVERLAYS += device/samsung/chagalllte/overlay
 
 # Device uses high-density artwork where available
 PRODUCT_AAPT_CONFIG := normal xlarge hdpi xhdpi xxhdpi
@@ -72,6 +72,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/sec_touchkey.kl:system/usr/keylayout/sec_touchkey.kl
 
+PRODUCT_PROPERTY_OVERRIDES := \
+    keyguard.no_require_sim=true \
+    ro.com.android.dataroaming=true
+
 # Keystore
 PRODUCT_PACKAGES += \
     keystore.exynos5
@@ -99,7 +103,9 @@ PRODUCT_COPY_FILES += \
 
 # Misc
 PRODUCT_PACKAGES += \
-    com.android.future.usb.accessory
+    com.android.future.usb.accessory \
+    Dialer \
+    SamsungServiceMode
 
 # MobiCore setup
 PRODUCT_PACKAGES += \
@@ -139,7 +145,9 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.usb.host.xml:system/etc/permissions/android.hardware.usb.host.xml \
     frameworks/native/data/etc/android.hardware.camera.flash-autofocus.xml:system/etc/permissions/android.hardware.camera.flash-autofocus.xml \
     frameworks/native/data/etc/android.hardware.camera.front.xml:system/etc/permissions/android.hardware.camera.front.xml \
-    frameworks/native/data/etc/android.hardware.bluetooth_le.xml:system/etc/permissions/android.hardware.bluetooth_le.xml
+    frameworks/native/data/etc/android.hardware.bluetooth_le.xml:system/etc/permissions/android.hardware.bluetooth_le.xml \
+    frameworks/native/data/etc/android.hardware.telephony.gsm.xml:system/etc/permissions/android.hardware.telephony.gsm.xml \
+    frameworks/native/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml
 
 # Power
 PRODUCT_PACKAGES += \
@@ -151,16 +159,29 @@ PRODUCT_PACKAGES += \
     init.universal5420.rc \
     init.universal5420.usb.rc \
     init.universal5420.wifi.rc \
+    init.baseband.rc \
     ueventd.universal5420.rc
 
 # Radio (needed for audio controls even on wifi-only)
 PRODUCT_PACKAGES += \
     libsecril-client \
-    libsecril-client-sap
+    libsecril-client-sap \
+    libril \
+    librilutils \
+    rild 
 
 # Recovery
 PRODUCT_PACKAGES += \
     init.recovery.universal5420.rc
+
+# TWRP
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/recovery/twrp.fstab:recovery/root/etc/twrp.fstab
+
+PRODUCT_PACKAGES += \
+    charger_res_images \
+    charger
+
 
 # Sensors
 PRODUCT_PACKAGES += \
@@ -193,7 +214,7 @@ PRODUCT_PACKAGES += \
     charger_res_images
 
 PRODUCT_PROPERTY_OVERRIDES += \
-    ro.carrier=wifi-only
+    ro.carrier=unknown
 
 # CPU producer to CPU consumer not supported 
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -203,4 +224,4 @@ PRODUCT_PROPERTY_OVERRIDES += \
 $(call inherit-product-if-exists, frameworks/native/build/phone-xxhdpi-2048-dalvik-heap.mk)
 
 # call the proprietary setup
-$(call inherit-product-if-exists, vendor/samsung/chagallwifi/chagallwifi-vendor.mk)
+$(call inherit-product-if-exists, vendor/samsung/chagalllte/chagalllte-vendor.mk)
