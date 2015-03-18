@@ -1,4 +1,4 @@
-# Audio
+	# Audio
 vendor/firmware/srp_cga.bin
 vendor/firmware/srp_data.bin
 vendor/firmware/srp_vliw.bin
@@ -144,4 +144,6 @@ usr/keylayout/gpio-keys.kl
 
 # ril
 sbin/cbd
-system/lib/libsec-ril.so
+lib/libsec-ril.so
+lib/libsecnativefeature.so
+
