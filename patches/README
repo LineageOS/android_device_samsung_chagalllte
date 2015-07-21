@@ -10,6 +10,6 @@ rebasing, I patch these files prior to each build:
 
 In the root of cm repo tree I issue:
 
-patch -p1 <device/samsung/chagallwifi/patches/OMX-google-ffmpeg.diff
+patch -p1 <device/samsung/chagalllte/patches/OMX-google-ffmpeg.diff
 
 Patch long and prosper - cheers.

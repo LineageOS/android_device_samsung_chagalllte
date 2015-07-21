@@ -21,4 +21,18 @@ service cpboot-daemon /sbin/cbd -d -txmm7160 -bh -mh -p 13
     class main
     user root
     group radio cache inet misc audio sdcard_rw log sdcard_r shell
-#seclabel u:r:cbd:s0
+#    seclabel u:r:cbd:s0
+
+service_redefine ril-daemon /system/bin/rild
+    class main
+    socket rild stream 660 root radio
+    socket rild-debug stream 660 radio system
+    user root
+    group radio cache inet misc audio sdcard_r sdcard_rw diag log
+    onrestart restart cpboot-daemon
+
+# Modem Logging daemon
+#service ML-daemon /system/bin/mlexe
+    #class main
+    #user root
+    #group system radio inet net_raw

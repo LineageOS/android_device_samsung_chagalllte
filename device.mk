@@ -54,6 +54,10 @@ PRODUCT_PACKAGES += \
     e2fsck \
     setup_fs
 
+# Fingerprint reader
+PRODUCT_PACKAGES += \
+    fingerprint.default
+
 # GPS
 PRODUCT_PACKAGES += \
     gps.universal5420
@@ -87,7 +91,6 @@ PRODUCT_PACKAGES += \
 
 # Media profile
 PRODUCT_COPY_FILES += \
-    frameworks/av/media/libstagefright/data/media_codecs_ffmpeg.xml:system/etc/media_codecs_ffmpeg.xml \
     frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:system/etc/media_codecs_google_audio.xml \
     frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml:system/etc/media_codecs_google_telephony.xml \
     frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:system/etc/media_codecs_google_video.xml  \
@@ -104,9 +107,7 @@ PRODUCT_COPY_FILES += \
 
 # Misc
 PRODUCT_PACKAGES += \
-    com.android.future.usb.accessory \
-    Dialer \
-    SamsungServiceMode
+    com.android.future.usb.accessory
 
 # MobiCore setup
 PRODUCT_PACKAGES += \
@@ -152,6 +153,7 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.telephony.gsm.xml:system/etc/permissions/android.hardware.telephony.gsm.xml \
     frameworks/native/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml
 
+
 # Power
 PRODUCT_PACKAGES += \
     power.universal5420
@@ -173,18 +175,10 @@ PRODUCT_PACKAGES += \
     librilutils \
     rild 
 
+
 # Recovery
 PRODUCT_PACKAGES += \
     init.recovery.universal5420.rc
-
-# TWRP
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/recovery/twrp.fstab:recovery/root/etc/twrp.fstab
-
-PRODUCT_PACKAGES += \
-    charger_res_images \
-    charger
-
 
 # Sensors
 PRODUCT_PACKAGES += \
@@ -217,8 +211,7 @@ PRODUCT_PACKAGES += \
     charger_res_images
 
 PRODUCT_PROPERTY_OVERRIDES += \
-    ro.carrier=unknown \
-    ro.ril.telephony.mqanelements=6
+    ro.carrier=unknown 
 
 # CPU producer to CPU consumer not supported 
 PRODUCT_PROPERTY_OVERRIDES += \

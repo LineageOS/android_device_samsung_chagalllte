@@ -19,7 +19,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#define LOG_TAG "Chagalllte PowerHAL"
+#define LOG_TAG "Chagallwifi PowerHAL"
 #include <utils/Log.h>
 
 #include <hardware/hardware.h>
@@ -81,7 +81,7 @@ struct power_module HAL_MODULE_INFO_SYM = {
         .module_api_version = POWER_MODULE_API_VERSION_0_2,
         .hal_api_version = HARDWARE_HAL_API_VERSION,
         .id = POWER_HARDWARE_MODULE_ID,
-        .name = "Chagalllte Power HAL",
+        .name = "Chagallwifi Power HAL",
         .author = "The CyanogenMod Project",
         .methods = &power_module_methods,
     },

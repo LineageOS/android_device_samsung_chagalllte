@@ -1,4 +1,4 @@
-	# Audio
+# Audio
 vendor/firmware/srp_cga.bin
 vendor/firmware/srp_data.bin
 vendor/firmware/srp_vliw.bin
@@ -141,9 +141,3 @@ usr/keylayout/gpio-keys.kl
 
 # swapping the sammy way
 /sbin/sswap
-
-# ril
-sbin/cbd
-lib/libsec-ril.so
-lib/libsecnativefeature.so
-
