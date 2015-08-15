@@ -67,7 +67,7 @@ BOARD_KERNEL_BASE := 0x10000000
 BOARD_KERNEL_PAGESIZE := 2048
 TARGET_KERNEL_CONFIG := cyanogenmod_chagalllte_defconfig
 TARGET_KERNEL_SOURCE := kernel/samsung/chagalllte
-TARGET_KERNEL_CUSTOM_TOOLCHAIN := arm-eabi-4.8
+#TARGET_KERNEL_CUSTOM_TOOLCHAIN := arm-eabi-4.8
 #TARGET_PREBUILT_KERNEL := device/samsung/chagalllte/kernel
 
 # Charging mode
@@ -124,7 +124,7 @@ BOARD_USE_DUALDPB_MODE := true
 
 # Partitions
 BOARD_BOOTIMAGE_PARTITION_SIZE := 8388608
-BOARD_RECOVERYIMAGE_PARTITION_SIZE := 9639936
+BOARD_RECOVERYIMAGE_PARTITION_SIZE := 9639936 
 BOARD_SYSTEMIMAGE_PARTITION_SIZE := 2506096640
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 12629049344
 BOARD_FLASH_BLOCK_SIZE := 4096
@@ -192,7 +192,6 @@ BOARD_HOSTAPD_DRIVER             := NL80211
 BOARD_HOSTAPD_PRIVATE_LIB        := lib_driver_cmd_bcmdhd
 WIFI_DRIVER_FW_PATH_PARAM        := "/sys/module/dhd/parameters/firmware_path"
 WIFI_DRIVER_FW_PATH_STA          := "/system/etc/wifi/bcmdhd_sta.bin"
-TARGET_RELEASETOOL_OTA_FROM_TARGET_SCRIPT := device/samsung/chagalllte/releasetools/ota_from_target_files
 WIFI_DRIVER_FW_PATH_AP           := "/system/etc/wifi/bcmdhd_apsta.bin"
 
 # inherit from the proprietary version
