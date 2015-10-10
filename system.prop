@@ -31,7 +31,7 @@ persist.sys.usb.config=mtp
 rild.libpath=/system/lib/libsec-ril.so
 rild.libargs=-d /dev/ttyS0
 ro.telephony.default_network=9
-ro.telephony.ril_class=chagalllteRIL
+ro.telephony.ril_class=ChagalllteRIL
 ro.ril.telephony.mqanelements=6
 
 # Randomly from stock

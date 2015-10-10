@@ -1,8 +1,5 @@
 /*
- * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
- * Not a Contribution.
- *
- * Copyright (C) 2006 The Android Open Source Project
+ * Copyright (c) 2014, The CyanogenMod Project. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,34 +19,45 @@ package com.android.internal.telephony;
 import static com.android.internal.telephony.RILConstants.*;
 
 import android.content.Context;
+import android.telephony.Rlog;
 import android.media.AudioManager;
-import android.os.AsyncResult;
 import android.os.Message;
 import android.os.Parcel;
+import android.os.AsyncResult;
 import android.telephony.PhoneNumberUtils;
-import android.telephony.Rlog;
 import android.telephony.SignalStrength;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
+import android.telephony.SmsManager;
 
 import com.android.internal.telephony.uicc.IccCardApplicationStatus;
 import com.android.internal.telephony.uicc.IccCardStatus;
+import com.android.internal.telephony.gsm.SmsBroadcastConfigInfo;
+import com.android.internal.telephony.cdma.CdmaSmsBroadcastConfigInfo;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.io.IOException;
 
 /**
  * RIL customization for Galaxy Tab S LTE devices
  *
+ * For Intel xmm7260 modem with Samsung firmware
+ *
  * {@hide}
  */
-public class chagalllteRIL extends RIL {
+public class ChagalllteRIL extends RIL {
 
-    private static final int RIL_UNSOL_RESPONSE_IMS_NETWORK_STATE_CHANGED = 1036;
-    private static final int RIL_REQUEST_DIAL_EMERGENCY = 10016;
+    /**********************************************************
+     * SAMSUNG REQUESTS
+     **********************************************************/
+    static final boolean RILJ_LOGD = true;
+    static final boolean RILJ_LOGV = true;
+
+    private static final int RIL_REQUEST_DIAL_EMERGENCY_CALL = 10016;
+
+    private static final int RIL_UNSOL_RESPONSE_IMS_NETWORK_STATE_CHANGED = 1037;
     private static final int RIL_UNSOL_RELEASE_COMPLETE_MESSAGE = 11001;
     private static final int RIL_UNSOL_STK_CALL_CONTROL_RESULT = 11003;
     private static final int RIL_UNSOL_DEVICE_READY_NOTI = 11008;
-    private static final int RIL_UNSOL_GPS_NOTI = 11009;
     private static final int RIL_UNSOL_AM = 11010;
     private static final int RIL_UNSOL_DUN_PIN_CONTROL_SIGNAL = 11011;
     private static final int RIL_UNSOL_DATA_SUSPEND_RESUME = 11012;
@@ -59,18 +67,85 @@ public class chagalllteRIL extends RIL {
     private static final int RIL_UNSOL_RESPONSE_HANDOVER = 11021;
     private static final int RIL_UNSOL_PCMCLOCK_STATE = 11022;
     private static final int RIL_LTE_UNSOL_LAST = 11036;
+    private static final int RIL_UNSOL_GPS_NOTI = 11009;
+
+
+    private Message mPendingGetSimStatus;
 
     private final AudioManager mAudioManager;
 
-    public chagalllteRIL(Context context, int networkMode, int cdmaSubscription, Integer instanceId) {
-        super(context, networkMode, cdmaSubscription, instanceId);
+    public ChagalllteRIL(Context context, int preferredNetworkType, int cdmaSubscription) {
+        super(context, preferredNetworkType, cdmaSubscription, null);
         mAudioManager = (AudioManager)mContext.getSystemService(Context.AUDIO_SERVICE);
         mQANElements = 6;
     }
 
+    public ChagalllteRIL(Context context, int preferredNetworkType, int cdmaSubscription, Integer instanceId) {
+        super(context, preferredNetworkType, cdmaSubscription, instanceId);
+        mAudioManager = (AudioManager)mContext.getSystemService(Context.AUDIO_SERVICE);
+        mQANElements = 6;
+    }
+
+    public void acceptCall(int index, Message result) {
+        RILRequest rr = RILRequest.obtain(RIL_REQUEST_ANSWER, result);
+
+        if (RILJ_LOGD) {
+            riljLog(rr.serialString() + "> " + requestToString(rr.mRequest));
+        }
+        rr.mParcel.writeInt(1);
+        rr.mParcel.writeInt(index);
+
+        send(rr);
+    }
+
     @Override
-    public void
-    dial(String address, int clirMode, UUSInfo uusInfo, Message result) {
+    public void acceptCall(Message result) {
+        acceptCall(0, result);
+    }
+
+    /**
+     *  Translates EF_SMS status bits to a status value compatible with
+     *  SMS AT commands.  See TS 27.005 3.1.
+     */
+    private int translateStatus(int status) {
+        switch(status & 0x7) {
+            case SmsManager.STATUS_ON_ICC_READ:
+                return 1;
+            case SmsManager.STATUS_ON_ICC_UNREAD:
+                return 0;
+            case SmsManager.STATUS_ON_ICC_SENT:
+                return 3;
+            case SmsManager.STATUS_ON_ICC_UNSENT:
+                return 2;
+        }
+
+        // Default to READ.
+        return 1;
+    }
+
+    @Override
+    public void writeSmsToSim(int status, String smsc, String pdu, Message response) {
+        status = translateStatus(status);
+
+        RILRequest rr = RILRequest.obtain(RIL_REQUEST_WRITE_SMS_TO_SIM,
+                response);
+
+        rr.mParcel.writeInt(status);
+        rr.mParcel.writeString(pdu);
+        rr.mParcel.writeString(smsc);
+        rr.mParcel.writeInt(255);     /* Samsung */
+
+        if (RILJ_LOGV) {
+            riljLog(rr.serialString() + "> "
+                    + requestToString(rr.mRequest)
+                    + " " + status);
+        }
+
+        send(rr);
+    }
+
+    @Override
+    public void dial(String address, int clirMode, UUSInfo uusInfo, Message result) {
         if (PhoneNumberUtils.isEmergencyNumber(address)) {
             dialEmergencyCall(address, clirMode, result);
             return;
@@ -80,9 +155,9 @@ public class chagalllteRIL extends RIL {
 
         rr.mParcel.writeString(address);
         rr.mParcel.writeInt(clirMode);
-        rr.mParcel.writeInt(0);         // CallDetails.call_type
-        rr.mParcel.writeInt(1);         // CallDetails.call_domain
-        rr.mParcel.writeString("");     // CallDetails.getCsvFromExtras
+        rr.mParcel.writeInt(0);     // CallDetails.call_type
+        rr.mParcel.writeInt(1);     // CallDetails.call_domain
+        rr.mParcel.writeString(""); // CallDetails.getCsvFromExtras
 
         if (uusInfo == null) {
             rr.mParcel.writeInt(0); // UUS information is absent
@@ -98,9 +173,24 @@ public class chagalllteRIL extends RIL {
         send(rr);
     }
 
+    private void dialEmergencyCall(String address, int clirMode, Message result) {
+        RILRequest rr;
+
+        rr = RILRequest.obtain(RIL_REQUEST_DIAL_EMERGENCY_CALL, result);
+        rr.mParcel.writeString(address);
+        rr.mParcel.writeInt(clirMode);
+        rr.mParcel.writeInt(0);        // CallDetails.call_type
+        rr.mParcel.writeInt(3);        // CallDetails.call_domain
+        rr.mParcel.writeString("");    // CallDetails.getCsvFromExtra
+        rr.mParcel.writeInt(0);        // Unknown
+
+        if (RILJ_LOGD) riljLog(rr.serialString() + "> " + requestToString(rr.mRequest));
+
+        send(rr);
+    }
+
     @Override
-    protected Object
-    responseIccCardStatus(Parcel p) {
+    protected Object responseIccCardStatus(Parcel p) {
         IccCardApplicationStatus appStatus;
 
         IccCardStatus cardStatus = new IccCardStatus();
@@ -128,7 +218,6 @@ public class chagalllteRIL extends RIL {
             appStatus.pin1_replaced  = p.readInt();
             appStatus.pin1           = appStatus.PinStateFromRILInt(p.readInt());
             appStatus.pin2           = appStatus.PinStateFromRILInt(p.readInt());
-            // All subsequent readInt()s added for our device
             p.readInt(); // pin1_num_retries
             p.readInt(); // puk1_num_retries
             p.readInt(); // pin2_num_retries
@@ -141,10 +230,8 @@ public class chagalllteRIL extends RIL {
     }
 
     @Override
-    protected Object
-    responseCallList(Parcel p) {
+    protected Object responseCallList(Parcel p) {
         int num;
-        int voiceSettings;
         ArrayList<DriverCall> response;
         DriverCall dc;
 
@@ -160,24 +247,30 @@ public class chagalllteRIL extends RIL {
             dc = new DriverCall();
 
             dc.state = DriverCall.stateFromCLCC(p.readInt());
-            // & 0xff to truncate to 1 byte added for us, not in RIL.java
             dc.index = p.readInt() & 0xff;
             dc.TOA = p.readInt();
             dc.isMpty = (0 != p.readInt());
             dc.isMT = (0 != p.readInt());
             dc.als = p.readInt();
-            voiceSettings = p.readInt();
-            dc.isVoice = (0 != voiceSettings);
-            boolean isVideo = (0 != p.readInt());
+            dc.isVoice = (0 != p.readInt());
+
+            boolean isVideo = (0 != p.readInt());   // Samsung CallDetails
             int call_type = p.readInt();            // Samsung CallDetails
             int call_domain = p.readInt();          // Samsung CallDetails
             String csv = p.readString();            // Samsung CallDetails
+
             dc.isVoicePrivacy = (0 != p.readInt());
             dc.number = p.readString();
-            int np = p.readInt();
-            dc.numberPresentation = DriverCall.presentationFromCLIP(np);
+            if (RILJ_LOGV) {
+                riljLog("responseCallList dc.number=" + dc.number);
+            }
+            dc.numberPresentation = DriverCall.presentationFromCLIP(p.readInt());
             dc.name = p.readString();
+            if (RILJ_LOGV) {
+                riljLog("responseCallList dc.name=" + dc.name);
+            }
             dc.namePresentation = p.readInt();
+
             int uusInfoPresent = p.readInt();
             if (uusInfoPresent == 1) {
                 dc.uusInfo = new UUSInfo();
@@ -186,8 +279,8 @@ public class chagalllteRIL extends RIL {
                 byte[] userData = p.createByteArray();
                 dc.uusInfo.setUserData(userData);
                 riljLogv(String.format("Incoming UUS : type=%d, dcs=%d, length=%d",
-                                dc.uusInfo.getType(), dc.uusInfo.getDcs(),
-                                dc.uusInfo.getUserData().length));
+                        dc.uusInfo.getType(), dc.uusInfo.getDcs(),
+                        dc.uusInfo.getUserData().length));
                 riljLogv("Incoming UUS : data (string)="
                         + new String(dc.uusInfo.getUserData()));
                 riljLogv("Incoming UUS : data (hex): "
@@ -215,7 +308,7 @@ public class chagalllteRIL extends RIL {
         if ((num == 0) && mTestingEmergencyCall.getAndSet(false)) {
             if (mEmergencyCallbackModeRegistrant != null) {
                 riljLog("responseCallList: call ended, testing emergency call," +
-                            " notify ECM Registrants");
+                        " notify ECM Registrants");
                 mEmergencyCallbackModeRegistrant.notifyRegistrant();
             }
         }
@@ -223,9 +316,32 @@ public class chagalllteRIL extends RIL {
         return response;
     }
 
+    // Hack for Lollipop
+    // The system now queries for SIM status before radio on, resulting
+    // in getting an APPSTATE_DETECTED state. The RIL does not send an
+    // RIL_UNSOL_RESPONSE_SIM_STATUS_CHANGED message after the SIM is
+    // initialized, so delay the message until the radio is on.
     @Override
-    protected Object
-    responseSignalStrength(Parcel p) {
+    public void getIccCardStatus(Message result) {
+        if (mState != RadioState.RADIO_ON) {
+            mPendingGetSimStatus = result;
+        } else {
+            super.getIccCardStatus(result);
+        }
+    }
+
+    @Override
+    protected void switchToRadioState(RadioState newState) {
+        super.switchToRadioState(newState);
+
+        if (newState == RadioState.RADIO_ON && mPendingGetSimStatus != null) {
+            super.getIccCardStatus(mPendingGetSimStatus);
+            mPendingGetSimStatus = null;
+        }
+    }
+
+    @Override
+    protected Object responseSignalStrength(Parcel p) {
         int gsmSignalStrength = p.readInt() & 0xff;
         int gsmBitErrorRate = p.readInt();
         int cdmaDbm = p.readInt();
@@ -266,8 +382,7 @@ public class chagalllteRIL extends RIL {
     }
 
     @Override
-    protected void
-    processUnsolicited (Parcel p) {
+    protected void processUnsolicited (Parcel p) {
         Object ret;
         int dataPosition = p.dataPosition(); // save off position within the Parcel
         int response = p.readInt();
@@ -290,6 +405,15 @@ public class chagalllteRIL extends RIL {
                 break;
             case RIL_UNSOL_AM:
                 ret = responseString(p);
+                String amString = (String) ret;
+                Rlog.d(RILJ_LOG_TAG, "Executing AM: " + amString);
+
+                try {
+                    Runtime.getRuntime().exec("am " + amString);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Rlog.e(RILJ_LOG_TAG, "am " + amString + " could not be executed.");
+                }
                 break;
             case RIL_UNSOL_DUN_PIN_CONTROL_SIGNAL:
                 ret = responseVoid(p);
@@ -302,6 +426,7 @@ public class chagalllteRIL extends RIL {
                 break;
             case RIL_UNSOL_WB_AMR_STATE:
                 ret = responseInts(p);
+                setWbAmr(((int[])ret)[0]);
                 break;
             case RIL_UNSOL_UART:
                 ret = responseInts(p);
@@ -326,109 +451,6 @@ public class chagalllteRIL extends RIL {
 
     }
 
-    @Override
-    protected RILRequest
-    processSolicited (Parcel p) {
-        int serial, error;
-        boolean found = false;
-        int dataPosition = p.dataPosition(); // save off position within the Parcel
-        serial = p.readInt();
-        error = p.readInt();
-        
-        RILRequest rr = null;
-        
-        /* Pre-process the reply before popping it */
-        synchronized (mRequestList) {
-            RILRequest tr = mRequestList.get(serial);
-            if (tr != null && tr.mSerial == serial) {
-                if (error == 0 || p.dataAvail() > 0) {
-                    try {
-                        switch (tr.mRequest) {
-                            /* Get those we're interested in */
-                            case RIL_REQUEST_DATA_REGISTRATION_STATE:
-                                rr = tr;
-                                break;
-                        }
-                    } catch (Throwable thr) {
-                        // Exceptions here usually mean invalid RIL responses
-                        if (tr.mResult != null) {
-                            AsyncResult.forMessage(tr.mResult, null, thr);
-                            tr.mResult.sendToTarget();
-                        }
-                        return tr;
-                    }
-                }
-            }
-        }
-        
-        if (rr == null) {
-            /* Nothing we care about, go up */
-            p.setDataPosition(dataPosition);
-            
-            // Forward responses that we are not overriding to the super class
-            return super.processSolicited(p);
-        }
-        
-        rr = findAndRemoveRequestFromList(serial);
-        
-        if (rr == null) {
-            return rr;
-        }
-        Object ret = null;
-        
-        if (error == 0 || p.dataAvail() > 0) {
-            switch (rr.mRequest) {
-                case RIL_REQUEST_DATA_REGISTRATION_STATE: 
-                    ret = responseDataRegistrationState(p); break;
-                default:
-                    throw new RuntimeException("Unrecognized solicited response: " + rr.mRequest);
-            }
-            //break;
-        }
-        
-        if (RILJ_LOGD) riljLog(rr.serialString() + "< " + requestToString(rr.mRequest)
-                               + " " + retToString(rr.mRequest, ret));
-                               
-        if (rr.mResult != null) {
-            AsyncResult.forMessage(rr.mResult, ret, null);
-            rr.mResult.sendToTarget();
-        }
-        return rr;
-    }
-
-    private void
-    dialEmergencyCall(String address, int clirMode, Message result) {
-        RILRequest rr;
-        Rlog.v(RILJ_LOG_TAG, "Emergency dial: " + address);
-
-        rr = RILRequest.obtain(RIL_REQUEST_DIAL_EMERGENCY, result);
-        rr.mParcel.writeString(address + "/");
-        rr.mParcel.writeInt(clirMode);
-        rr.mParcel.writeInt(0);        // CallDetails.call_type
-        rr.mParcel.writeInt(3);        // CallDetails.call_domain
-        rr.mParcel.writeString("");    // CallDetails.getCsvFromExtra
-        rr.mParcel.writeInt(0);        // Unknown
-
-        if (RILJ_LOGD) riljLog(rr.serialString() + "> " + requestToString(rr.mRequest));
-
-        send(rr);
-    }
-
-    private Object
-    responseDataRegistrationState(Parcel p) {
-        String response[] = (String[])responseStrings(p); // all data from parcell get popped
-        /* DANGER WILL ROBINSON
-         * In some cases from Vodaphone we are receiving a RAT of 102
-         * while in tunnels of the metro. Lets Assume that if we
-         * receive 102 we actually want a RAT of 2 for EDGE service */
-        if (response.length > 4 &&
-            response[0].equals("1") &&
-            response[3].equals("102")) {
-            response[3] = "2";
-        }
-        return response;
-    }
-
     /**
      * Set audio parameter "wb_amr" for HD-Voice (Wideband AMR).
      *
@@ -444,16 +466,123 @@ public class chagalllteRIL extends RIL {
         }
     }
 
-    private void logParcel(Parcel p) {
-        StringBuffer s = new StringBuffer();
-        byte [] bytes = p.marshall();
+    @Override
+    public void getGsmBroadcastConfig(Message response) {
+        Rlog.v(RILJ_LOG_TAG, "XMM7260RIL: getGsmBroadcastConfig");
 
-        for (int i = 0; i < bytes.length; i++) {
-            if (i > 0) s.append(" ");
-            if (i == p.dataPosition()) s.append("*** ");
-            s.append(bytes[i]);
+        if (response != null) {
+            CommandException e = new CommandException(CommandException.Error.REQUEST_NOT_SUPPORTED);
+            AsyncResult.forMessage(response, null, e);
+            response.sendToTarget();
         }
-        riljLog("parcel position=" + p.dataPosition() + ": " + s);
+    }
+
+    @Override
+    public void setGsmBroadcastConfig(SmsBroadcastConfigInfo[] config, Message response) {
+        Rlog.v(RILJ_LOG_TAG, "XMM7260RIL: setGsmBroadcastConfig");
+
+        if (response != null) {
+            CommandException e = new CommandException(CommandException.Error.REQUEST_NOT_SUPPORTED);
+            AsyncResult.forMessage(response, null, e);
+            response.sendToTarget();
+        }
+    }
+
+    @Override
+    public void setGsmBroadcastActivation(boolean activate, Message response) {
+        Rlog.v(RILJ_LOG_TAG, "XMM7260RIL: setGsmBroadcastActivation");
+
+        if (response != null) {
+            CommandException e = new CommandException(CommandException.Error.REQUEST_NOT_SUPPORTED);
+            AsyncResult.forMessage(response, null, e);
+            response.sendToTarget();
+        }
+    }
+
+    @Override
+    public void getCdmaBroadcastConfig(Message response) {
+        Rlog.v(RILJ_LOG_TAG, "XMM7260RIL: getCdmaBroadcastConfig");
+
+        if (response != null) {
+            CommandException e = new CommandException(CommandException.Error.REQUEST_NOT_SUPPORTED);
+            AsyncResult.forMessage(response, null, e);
+            response.sendToTarget();
+        }
+    }
+
+    @Override
+    public void setCdmaBroadcastConfig(CdmaSmsBroadcastConfigInfo[] configs, Message response) {
+        Rlog.v(RILJ_LOG_TAG, "XMM7260RIL: setCdmaBroadcastConfig");
+
+        if (response != null) {
+            CommandException e = new CommandException(CommandException.Error.REQUEST_NOT_SUPPORTED);
+            AsyncResult.forMessage(response, null, e);
+            response.sendToTarget();
+        }
+    }
+
+    @Override
+    public void setCdmaBroadcastActivation(boolean activate, Message response) {
+        Rlog.v(RILJ_LOG_TAG, "XMM7260RIL: setCdmaBroadcastActivation");
+
+        if (response != null) {
+            CommandException e = new CommandException(CommandException.Error.REQUEST_NOT_SUPPORTED);
+            AsyncResult.forMessage(response, null, e);
+            response.sendToTarget();
+        }
+    }
+
+    @Override
+    public void getCellInfoList(Message result) {
+        Rlog.v(RILJ_LOG_TAG, "XMM7260RIL: getCellInfoList");
+
+        if (result != null) {
+            CommandException e = new CommandException(CommandException.Error.REQUEST_NOT_SUPPORTED);
+            AsyncResult.forMessage(result, null, e);
+            result.sendToTarget();
+        }
+    }
+
+    @Override
+    public void setDataAllowed(boolean allowed, Message result) {
+        Rlog.v(RILJ_LOG_TAG, "XMM7260RIL: setDataAllowed");
+
+        if (result != null) {
+            AsyncResult.forMessage(result, 0, null);
+            result.sendToTarget();
+        }
+    }
+
+    @Override
+    public void setCellInfoListRate(int rateInMillis, Message response) {
+        Rlog.v(RILJ_LOG_TAG, "XMM7260RIL: setCellInfoListRate");
+
+        if (response != null) {
+            CommandException e = new CommandException(CommandException.Error.REQUEST_NOT_SUPPORTED);
+            AsyncResult.forMessage(response, null, e);
+            response.sendToTarget();
+        }
+    }
+
+    private void constructGsmSendSmsRilRequest(RILRequest rr, String smscPDU, String pdu) {
+        rr.mParcel.writeInt(2);
+        rr.mParcel.writeString(smscPDU);
+        rr.mParcel.writeString(pdu);
+    }
+
+    /**
+     * The RIL can't handle the RIL_REQUEST_SEND_SMS_EXPECT_MORE
+     * request properly, so we use RIL_REQUEST_SEND_SMS instead.
+     */
+    @Override
+    public void sendSMSExpectMore(String smscPDU, String pdu, Message result) {
+        Rlog.v(RILJ_LOG_TAG, "XMM7260RIL: sendSMSExpectMore");
+
+        RILRequest rr = RILRequest.obtain(RIL_REQUEST_SEND_SMS, result);
+        constructGsmSendSmsRilRequest(rr, smscPDU, pdu);
+
+        if (RILJ_LOGD) riljLog(rr.serialString() + "> " + requestToString(rr.mRequest));
+
+        send(rr);
     }
 }
-
