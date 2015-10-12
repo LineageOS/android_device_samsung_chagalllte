@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+  <remote fetch="https://github.com/CyanogenMod/" name="cm" />
+  <remote fetch="https://github.com/arkaev/" name="nexor" />
+
+  <project name="android_device_samsung_chagalllte" path="device/samsung/chagalllte" remote="nexor" revision="cm-12.1" />
+  <project name="android_vendor_samsung_chagalllte" path="vendor/samsung/chagalllte" remote="nexor" revision="cm-12.1" />
+  <project name="android_kernel_samsung_chagalllte" path="kernel/samsung/chagalllte" remote="nexor" revision="cm-12.1" />
+
+  <project name="CyanogenMod/android_hardware_samsung" path="hardware/samsung" remote="github" />
+  <project name="CyanogenMod/android_hardware_samsung_slsi_exynos" path="hardware/samsung_slsi/exynos" remote="github" />
+  <project name="CyanogenMod/android_hardware_samsung_slsi_exynos5-insignal" path="hardware/samsung_slsi/exynos5-insignal" remote="github" />
+  <project name="CyanogenMod/android_hardware_samsung_slsi_exynos5420" path="hardware/samsung_slsi/exynos5420" remote="github" />
+  <project name="CyanogenMod/android_hardware_samsung_slsi_openmax" path="hardware/samsung_slsi/openmax" remote="github" />
+  <project name="CyanogenMod/android_packages_apps_SamsungServiceMode" path="packages/apps/SamsungServiceMode" remote="github" />
+</manifest>
