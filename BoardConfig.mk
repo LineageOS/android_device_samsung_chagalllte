@@ -199,5 +199,9 @@ WIFI_DRIVER_FW_PATH_STA          := "/system/etc/wifi/bcmdhd_sta.bin"
 WIFI_DRIVER_FW_PATH_AP           := "/system/etc/wifi/bcmdhd_apsta.bin"
 TARGET_RELEASETOOL_OTA_FROM_TARGET_SCRIPT := device/samsung/chagalllte/releasetools/ota_from_target_files
 
+# ANT+
+BOARD_ANT_WIRELESS_DEVICE := "vfs-prerelease"
+BOARD_ANT_WIRELESS_POWER := "bluedroid"
+
 # inherit from the proprietary version
 -include vendor/samsung/chagalllte/BoardConfigVendor.mk
