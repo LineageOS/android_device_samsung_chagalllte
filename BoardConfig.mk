@@ -67,8 +67,6 @@ BOARD_KERNEL_BASE := 0x10000000
 BOARD_KERNEL_PAGESIZE := 2048
 TARGET_KERNEL_CONFIG := cyanogenmod_chagalllte_defconfig
 TARGET_KERNEL_SOURCE := kernel/samsung/chagalllte
-#TARGET_KERNEL_CUSTOM_TOOLCHAIN := arm-eabi-4.8
-#TARGET_PREBUILT_KERNEL := device/samsung/chagalllte/kernel
 
 # Charging mode
 BOARD_CHARGER_ENABLE_SUSPEND := true
@@ -131,6 +129,9 @@ BOARD_FLASH_BLOCK_SIZE := 4096
 
 # PowerHAL
 TARGET_POWERHAL_VARIANT := chagalllte
+
+# Enable dex-preoptimization to speed up first boot sequence
+WITH_DEXPREOPT := true
 
 # Recovery
 COMMON_GLOBAL_CFLAGS += -DNO_SECURE_DISCARD
