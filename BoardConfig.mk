@@ -203,5 +203,8 @@ TARGET_RELEASETOOL_OTA_FROM_TARGET_SCRIPT := device/samsung/chagalllte/releaseto
 BOARD_ANT_WIRELESS_DEVICE := "vfs-prerelease"
 BOARD_ANT_WIRELESS_POWER := "bluedroid"
 
+# custom additions to updater-script
+TARGET_RELEASETOOL_OTA_FROM_TARGET_SCRIPT := device/samsung/chagalllte/releasetools/ota_from_target_files
+
 # inherit from the proprietary version
 -include vendor/samsung/chagalllte/BoardConfigVendor.mk
