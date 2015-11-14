@@ -166,6 +166,7 @@ BOARD_SEPOLICY_UNION += \
 	gpsd.te \
 	init.te \
 	kernel.te \
+	macloader.te \
 	mediaserver.te \
 	macloader.te \
 	service_contexts \
