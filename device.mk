@@ -102,5 +102,9 @@ PRODUCT_PACKAGES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.carrier=unknown 
 
+# IO Scheduler
+PRODUCT_PROPERTY_OVERRIDES += \
+    sys.io.scheduler=bfq
+
 # call the proprietary setup
 $(call inherit-product-if-exists, vendor/samsung/chagalllte/chagalllte-vendor.mk)
