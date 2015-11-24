@@ -21,6 +21,10 @@ LOCAL_PATH := device/samsung/chagalllte
 
 DEVICE_PACKAGE_OVERLAYS += device/samsung/chagalllte/overlay
 
+# Device uses high-density artwork where available
+PRODUCT_AAPT_CONFIG := normal xlarge
+PRODUCT_AAPT_PREF_CONFIG := xhdpi
+
 # Audio
 PRODUCT_PACKAGES += \
     audio.primary.universal5420 \
