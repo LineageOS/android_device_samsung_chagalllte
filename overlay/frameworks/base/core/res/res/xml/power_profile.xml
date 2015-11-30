@@ -34,6 +34,7 @@
         <value>300000</value>
         <value>250000</value>
         <value>200000</value>
+        <value>150000</value>
         <value>100000</value>
     </array>
     <item name="cpu.idle">3.75</item>
@@ -62,6 +63,7 @@
         <value>79</value>
         <value>77</value>
         <value>76</value>
+        <value>75</value>
     </array>
     <item name="battery.capacity">7900</item>
     <array name="wifi.batchedscan">
