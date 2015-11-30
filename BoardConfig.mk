@@ -29,9 +29,6 @@ BOARD_MODEM_TYPE := xmm7260
 # RIL.java overwrite
 BOARD_RIL_CLASS := ../../../$(LOCAL_PATH)/ril
 
-# Bluetooth
-BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(LOCAL_PATH)/bluetooth
-
 # Kernel
 TARGET_KERNEL_CONFIG := cyanogenmod_deathly_chagalllte_defconfig
 TARGET_KERNEL_SOURCE := kernel/samsung/klimtwifi
