@@ -25,6 +25,26 @@ DEVICE_PACKAGE_OVERLAYS += device/samsung/chagalllte/overlay
 PRODUCT_AAPT_CONFIG := normal xlarge
 PRODUCT_AAPT_PREF_CONFIG := xhdpi
 
+# Camera
+PRODUCT_PACKAGES += \
+    camera.universal5420 \
+    libhwjpeg
+
+# GPS
+PRODUCT_PACKAGES += \
+    gps.universal5420
+
+# HW composer
+PRODUCT_PACKAGES += \
+    libion \
+    hwcomposer.exynos5 \
+    gralloc.exynos5 \
+    memtrack.exynos5
+
+# IR
+PRODUCT_PACKAGES += \
+    consumerir.universal5420
+
 # Audio
 PRODUCT_PACKAGES += \
     audio.primary.universal5420 \
@@ -74,7 +94,6 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.telephony.gsm.xml:system/etc/permissions/android.hardware.telephony.gsm.xml \
     frameworks/native/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml
 
-
 # Power
 PRODUCT_PACKAGES += \
     power.universal5420
@@ -92,8 +111,11 @@ PRODUCT_PACKAGES += \
     libsecril-client-sap \
     libril \
     librilutils \
-    rild 
+    rild
 
+# Power
+PRODUCT_PACKAGES += \
+    power.universal5420
 
 # Charger
 PRODUCT_PACKAGES += \
