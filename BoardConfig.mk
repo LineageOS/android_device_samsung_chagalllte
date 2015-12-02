@@ -42,9 +42,6 @@ BOARD_SYSTEMIMAGE_PARTITION_SIZE := 2506096640
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 12629049344
 BOARD_FLASH_BLOCK_SIZE := 4096
 
-# Enable dex-preoptimization to speed up first boot sequence
-WITH_DEXPREOPT := true
-
 # Recovery
 TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/rootdir/etc/fstab.universal5420
 
