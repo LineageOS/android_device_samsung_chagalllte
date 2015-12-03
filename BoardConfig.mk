@@ -42,6 +42,15 @@ BOARD_SYSTEMIMAGE_PARTITION_SIZE := 2506096640
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 12629049344
 BOARD_FLASH_BLOCK_SIZE := 4096
 
+# SELinux
+BOARD_SEPOLICY_DIRS += \
+    device/samsung/chagalllte/sepolicy
+
+BOARD_SEPOLICY_UNION += \
+    device.te \
+    file_contexts \
+    rild.te
+
 # Recovery
 TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/rootdir/etc/fstab.universal5420
 
