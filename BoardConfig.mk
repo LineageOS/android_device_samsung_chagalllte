@@ -15,7 +15,7 @@
 #
 
 # Inherit from common chagall-common
-include device/samsung/chagall-common/BoardConfigCommon.mk
+-include device/samsung/chagall-common/BoardConfigCommon.mk
 
 LOCAL_PATH := device/samsung/chagalllte
 
@@ -30,10 +30,13 @@ BOARD_RIL_CLASS := ../../../$(LOCAL_PATH)/ril
 TARGET_SPECIFIC_HEADER_PATH := $(LOCAL_PATH)/include
 
 # Kernel
-TARGET_KERNEL_CONFIG := cyanogenmod_deathly_chagalllte_defconfig
+TARGET_KERNEL_CONFIG := cyanogenmod_chagalllte_defconfig
 
 # Bootloader
 TARGET_OTA_ASSERT_DEVICE := chagalllte
+
+# FIMG2D
+BOARD_USES_FIMGAPI_V4L2 := false
 
 # Partitions
 BOARD_BOOTIMAGE_PARTITION_SIZE := 8388608
