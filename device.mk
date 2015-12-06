@@ -35,9 +35,9 @@ PRODUCT_COPY_FILES += \
 
 PRODUCT_PACKAGES += \
     fstab.universal5420 \
-    init.samsung.rc \
-    init.baseband.rc \
-    ueventd.universal5420.rc
+    init.universal5420.rc \
+    ueventd.universal5420.rc \
+    init.baseband.rc
 
 # Radio (needed for audio controls even on wifi-only)
 PRODUCT_PACKAGES += \
@@ -48,7 +48,7 @@ PRODUCT_PACKAGES += \
     rild
 
 PRODUCT_PROPERTY_OVERRIDES += \
-    ro.carrier=unknown 
+    ro.carrier=unknown
 
 # call the proprietary setup
 $(call inherit-product-if-exists, vendor/samsung/chagalllte/chagalllte-vendor.mk)

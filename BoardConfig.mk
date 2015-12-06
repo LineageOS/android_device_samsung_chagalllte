@@ -38,6 +38,9 @@ TARGET_OTA_ASSERT_DEVICE := chagalllte
 # FIMG2D
 BOARD_USES_FIMGAPI_V4L2 := false
 
+# Graphics
+OVERRIDE_RS_DRIVER := libRSDriverArm.so
+
 # Partitions
 BOARD_BOOTIMAGE_PARTITION_SIZE := 8388608
 BOARD_RECOVERYIMAGE_PARTITION_SIZE := 9639936 
@@ -56,10 +59,6 @@ BOARD_SEPOLICY_UNION += \
 
 # Recovery
 TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/rootdir/etc/fstab.universal5420
-
-# ANT+
-BOARD_ANT_WIRELESS_DEVICE := "vfs-prerelease"
-BOARD_ANT_WIRELESS_POWER := "bluedroid"
 
 # inherit from the proprietary version
 -include vendor/samsung/chagalllte/BoardConfigVendor.mk
