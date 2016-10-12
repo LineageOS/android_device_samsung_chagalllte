@@ -241,6 +241,7 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     libnetcmdiface \
     macloader \
+    wifiloader \
     modemloader
 
 
