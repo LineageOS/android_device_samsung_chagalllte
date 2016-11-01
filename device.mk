@@ -45,9 +45,6 @@ TARGET_BOOTANIMATION_HALF_RES := true
 TARGET_SCREEN_HEIGHT := 2560
 TARGET_SCREEN_WIDTH := 1600
 
-PRODUCT_PACKAGES += \
-    libsamsung_symbols
-
 # boringssl-compat
 PRODUCT_PACKAGES += \
     libboringssl-compat
@@ -85,8 +82,7 @@ PRODUCT_PACKAGES += \
 
 # GPS
 PRODUCT_PACKAGES += \
-    gps.universal5420 \
-    libdmitry
+    gps.universal5420 
 
 # HW composer
 PRODUCT_PACKAGES += \
