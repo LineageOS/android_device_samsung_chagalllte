@@ -398,40 +398,6 @@ public class SlteRIL extends RIL {
         send(rr);
     }
 
-    // This method is used in the search network functionality.
-    // See mobile network setting -> network operators
-    @Override
-    protected Object
-    responseOperatorInfos(Parcel p) {
-        String strings[] = (String[])responseStrings(p);
-        ArrayList<OperatorInfo> ret;
-
-        if (strings.length % 5 != 0) {
-            throw new RuntimeException("RIL_REQUEST_QUERY_AVAILABLE_NETWORKS: invalid response. Got "
-                                       + strings.length + " strings, expected multiple of " + 5);
-        }
-
-        ret = new ArrayList<OperatorInfo>(strings.length / 5);
-        for (int i = 0 ; i < strings.length ; i += 5) {
-            String strOperatorLong = strings[i+0];
-            String strOperatorNumeric = strings[i+2];
-            String strState = strings[i+3].toLowerCase();
-
-            Rlog.v(RILJ_LOG_TAG,
-                   "XMM7260: Add OperatorInfo: " + strOperatorLong +
-                   ", " + strOperatorLong +
-                   ", " + strOperatorNumeric +
-                   ", " + strState);
-
-            ret.add(new OperatorInfo(strOperatorLong, // operatorAlphaLong
-                                     strOperatorLong, // operatorAlphaShort
-                                     strOperatorNumeric,    // operatorNumeric
-                                     strState));  // stateString
-        }
-
-        return ret;
-    }
-
     @Override
     protected void
     processUnsolicited(Parcel p, int type) {
@@ -472,7 +438,7 @@ public class SlteRIL extends RIL {
 
         switch (newResponse) {
             case RIL_UNSOL_AM:
-                ret = responseAm(p);
+                ret = responseString(p);
                 break;
             case RIL_UNSOL_STK_SEND_SMS_RESULT:
                 ret = responseInts(p);
@@ -493,23 +459,5 @@ public class SlteRIL extends RIL {
                 Rlog.v(RILJ_LOG_TAG, "XMM7260: am=" + strAm);
                 break;
         }
-    }
-
-    private Object
-    responseAm(Parcel p) {
-        Rlog.d(RILJ_LOG_TAG, "responseAm");
-
-        Object ret = responseString(p);
-        String amString = (String) ret;
-        Rlog.d(RILJ_LOG_TAG, "Executing AM: " + amString);
-
-        try {
-            Runtime.getRuntime().exec("am " + amString);
-        } catch (IOException e) {
-            e.printStackTrace();
-            Rlog.e(RILJ_LOG_TAG, "am " + amString + " could not be executed.");
-        }
-
-        return ret;
     }
 }
