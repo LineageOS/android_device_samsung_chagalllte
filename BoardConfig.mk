@@ -40,9 +40,6 @@ TARGET_KERNEL_CONFIG := lineageos_chagalllte_defconfig
 # Include path
 TARGET_SPECIFIC_HEADER_PATH := $(LOCAL_PATH)/include
 
-# Cyanogen Hardware
-BOARD_HARDWARE_CLASS := $(LOCAL_PATH)/cmhw
-
 # Partitions
 BOARD_BOOTIMAGE_PARTITION_SIZE := 8388608
 BOARD_RECOVERYIMAGE_PARTITION_SIZE := 10485760
@@ -55,6 +52,12 @@ BOARD_FLASH_BLOCK_SIZE := 4096
 # SELinux
 BOARD_SEPOLICY_DIRS += device/samsung/exynos5420-common/sepolicy
 BOARD_SEPOLICY_DIRS += device/samsung/chagalllte/sepolicy
+
+# Cyanogen Hardware
+BOARD_HARDWARE_CLASS := $(COMMON_PATH)/cmhw
+
+# Audio
+TARGET_AUDIOHAL_VARIANT := samsung
 
 # Inherit from exynos5420-common
 include device/samsung/exynos5420-common/BoardConfigCommon.mk
