@@ -23,7 +23,8 @@ DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
 PRODUCT_AAPT_CONFIG := normal large xlarge
 
 PRODUCT_COPY_FILES += \
-    device/samsung/chagalllte/audio/mixer_paths_0.xml:system/etc/mixer_paths_0.xml
+    device/samsung/chagalllte/configs/audio/mixer_paths_0.xml:system/etc/mixer_paths_0.xml \
+    device/samsung/chagalllte/configs/audio/audio_policy.conf:system/etc/audio_policy.conf
 
 PRODUCT_PACKAGES += \
     audio.primary.universal5420
