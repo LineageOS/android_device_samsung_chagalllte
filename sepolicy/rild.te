@@ -8,7 +8,6 @@ allow rild app_efs_file:file r_file_perms;
 # /dev/mbin0
 allow rild block_device:dir r_dir_perms;
 allow rild emmcblk_device:blk_file r_file_perms;
-allow rild efs_block_device:blk_file r_file_perms;
 
 # /dev/umts_boot0, /dev/umts_ipc0
 allow rild mif_device:chr_file rw_file_perms;
@@ -22,10 +21,19 @@ allow rild proc_net:file rw_file_perms;
 allow rild gpsd:dir r_dir_perms;
 allow rild gpsd:file r_file_perms;
 
-# rild reads /proc/pid/cmdline of mediaserver
-allow rild mediaserver:dir { open read search getattr };
-allow rild mediaserver:file { open read getattr };
+# rild reads /proc/pid/cmdline of audioserver
+allow rild audioserver:dir { open read search getattr };
+allow rild audioserver:file { open read getattr };
 
 # /data/misc/radio/*
 allow rild radio_data_file:dir rw_dir_perms;
 allow rild radio_data_file:file create_file_perms;
+
+# /data/data/com.android.providers.telephony/databases/telephony.db
+allow rild radio_data_file:lnk_file r_file_perms;
+
+# audioserver
+allow rild audioserver:dir search;
+
+# properties
+set_prop(modemloader, radio_prop)
