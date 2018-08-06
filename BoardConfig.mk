@@ -34,18 +34,33 @@ BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(LOCAL_PATH)/bluetooth
 # Bootloader
 TARGET_OTA_ASSERT_DEVICE := chagalllte
 
+# Kernel
+TARGET_KERNEL_CONFIG := lineageos_chagalllte_defconfig
+
 # Include path
 TARGET_SPECIFIC_HEADER_PATH := $(LOCAL_PATH)/include
 
+# Cyanogen Hardware
+BOARD_HARDWARE_CLASS := $(LOCAL_PATH)/cmhw
+
 # Partitions
 BOARD_BOOTIMAGE_PARTITION_SIZE := 8388608
-BOARD_RECOVERYIMAGE_PARTITION_SIZE := 9639936
-BOARD_SYSTEMIMAGE_PARTITION_SIZE := 2506096640
+BOARD_RECOVERYIMAGE_PARTITION_SIZE := 10485760
+BOARD_SYSTEMIMAGE_PARTITION_SIZE := 2202009600
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 12629049344
 BOARD_CACHEIMAGE_PARTITION_SIZE := 209715200
+BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_FLASH_BLOCK_SIZE := 4096
 
 # SELinux
+BOARD_SEPOLICY_DIRS += device/samsung/exynos5420-common/sepolicy
+BOARD_SEPOLICY_DIRS += device/samsung/chagalllte/sepolicy
 
 # custom additions to updater-script
 TARGET_RELEASETOOL_OTA_FROM_TARGET_SCRIPT := device/samsung/chagalllte/releasetools/ota_from_target_files
+
+# Audio
+TARGET_AUDIOHAL_VARIANT := samsung
+
+# Inherit from exynos5420-common
+include device/samsung/exynos5420-common/BoardConfigCommon.mk
