@@ -1,5 +1,8 @@
-# Modemloader
-hw.revision              u:object_r:modemloader_prop:s0
+# modemloader
+hw.revision                     u:object_r:modemloader_prop:s0
+ro.cbd.dt_revision              u:object_r:modemloader_prop:s0
+ril.cbd.dt_revision             u:object_r:modemloader_prop:s0
+ro.modemloader.done             u:object_r:modemloader_prop:s0
 
-# Camera
-persist.sys.camera       u:object_r:camera_prop:s0
+# radio
+persist.ril.                    u:object_r:radio_prop:s0
