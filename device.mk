@@ -16,7 +16,7 @@
 
 LOCAL_PATH := device/samsung/chagalllte
 
-PRODUCT_CHARACTERISTICS := tablet
+PRODUCT_CHARACTERISTICS := tablet,noearpiece
 DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
 
 # Device uses high-density artwork where available
@@ -26,6 +26,9 @@ PRODUCT_AAPT_CONFIG := normal large xlarge
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/audio/mixer_paths_0.xml:system/etc/mixer_paths_0.xml \
     $(LOCAL_PATH)/configs/audio/audio_policy.conf:system/etc/audio_policy.conf
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    audio_hal.disable_two_mic=true
 
 PRODUCT_PACKAGES += \
     audio.primary.universal5420
@@ -50,6 +53,7 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_PROPERTY_OVERRIDES += \
     keyguard.no_require_sim=true \
+    ro.com.android.dataroaming=true
 
 # Permissions
 PRODUCT_COPY_FILES += \
@@ -68,7 +72,13 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     libril \
     librilutils \
+    rild \
+    libxml2 \
+    libprotobuf-cpp-full \
     modemloader
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.carrier=unknown
 
 # call dalvik heap and hwui config
 $(call inherit-product, frameworks/native/build/phone-xxhdpi-3072-dalvik-heap.mk)
