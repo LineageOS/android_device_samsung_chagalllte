@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "37ea016b_662783bc",
+        "filename": "sepolicy/property_contexts",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 13648
+      },
+      "writtenOn": "2018-08-06T11:00:57Z",
+      "side": 1,
+      "message": "You could replace all these persist.ril.* entries by a single line:\n\npersist.ril.     u:object_r:radio_prop:s0",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 25
+      },
+      "revId": "2bc75eb4c1f8aabe63d09776524b4f37351f254c",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    }
+  ]
+}
