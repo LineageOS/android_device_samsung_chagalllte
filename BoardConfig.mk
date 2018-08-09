@@ -35,8 +35,7 @@ BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(LOCAL_PATH)/bluetooth
 TARGET_OTA_ASSERT_DEVICE := chagalllte
 
 # Kernel
-TARGET_KERNEL_CONFIG := lineageos_deathly_chagalllte_defconfig
-BOARD_CUSTOM_BOOTIMG := true
+TARGET_KERNEL_CONFIG := lineageos_chagalllte_defconfig
 
 # Include path
 TARGET_SPECIFIC_HEADER_PATH := $(LOCAL_PATH)/include
