@@ -402,6 +402,7 @@ typedef struct {
     char            als;        /* ALS line indicator if available
                                    (0 = line 1) */
     char            isVoice;    /* nonzero if this is is a voice call */
+    char            isVideo;    /* Samsung xmm7260 */
 
     char            isVoicePrivacy;     /* nonzero if CDMA voice privacy mode is active */
     char *          number;     /* Remote party number */
@@ -560,6 +561,7 @@ typedef struct {
     int errorCode;    /* See 3GPP 27.005, 3.2.5 for GSM/UMTS,
                          3GPP2 N.S0005 (IS-41C) Table 171 for CDMA,
                          -1 if unknown or not applicable*/
+    int vendor_data;  /* unknown value returned by T805 modem */
 } RIL_SMS_Response;
 
 /** Used by RIL_REQUEST_WRITE_SMS_TO_SIM */
@@ -1012,11 +1014,11 @@ typedef struct
   int              pin1_replaced;   /* applicable to USIM, CSIM & ISIM */
   RIL_PinState     pin1;
   RIL_PinState     pin2;
-  int              foo1;            /* Samsung */
-  int              foo2;            /* Samsung */
-  int              foo3;            /* Samsung */
-  int              foo4;            /* Samsung */
-  int              foo5;            /* Samsung */
+  int              foo1;            // pin1_num_retries
+  int              foo2;            // puk1_num_retries
+  int              foo3;            // pin2_num_retries
+  int              foo4;            // puk2_num_retries
+  int              foo5;            // perso_unblock_retries
 } RIL_AppStatus;
 
 /* Deprecated, use RIL_CardStatus_v6 */
@@ -5186,6 +5188,7 @@ typedef struct {
  * You normally find these constants if you decompile RILConstants.class in
  * framework2.odex.
  */
+#define RIL_OEM_REQUEST_BASE 10000
 
 #define RIL_REQUEST_DIAL_EMERGENCY_CALL 10001
 #define RIL_REQUEST_CALL_DEFLECTION 10002
@@ -5210,6 +5213,7 @@ typedef struct {
 #define RIL_REQUEST_HANGUP_VT 10021
 #define RIL_REQUEST_HOLD 10022
 #define RIL_REQUEST_SET_SIM_POWER 10023
+#define RIL_REQUEST_GET_ACB_INFO 10024
 #define RIL_REQUEST_UICC_GBA_AUTHENTICATE_BOOTSTRAP 10025
 #define RIL_REQUEST_UICC_GBA_AUTHENTICATE_NAF 10026
 #define RIL_REQUEST_GET_INCOMING_COMMUNICATION_BARRING 10027
@@ -5218,6 +5222,9 @@ typedef struct {
 #define RIL_REQUEST_SET_TRANSFER_CALL 10030
 #define RIL_REQUEST_GET_DISABLE_2G 10031
 #define RIL_REQUEST_SET_DISABLE_2G 10032
+#define RIL_REQUEST_REFRESH_NITZ_TIME 10033
+#define RIL_REQUEST_ENABLE_UNSOL_RESPONSE 10034
+#define RIL_REQUEST_CANCEL_TRANSFER_CALL 10035
 
 /***********************************************************************/
 
@@ -5851,18 +5858,19 @@ typedef struct {
 /**********************************************************
  * SAMSUNG RESPONSE
  **********************************************************/
-
 #define SAMSUNG_UNSOL_RESPONSE_BASE 11000
 
 #define RIL_UNSOL_RELEASE_COMPLETE_MESSAGE 11001
 #define RIL_UNSOL_STK_SEND_SMS_RESULT 11002
 #define RIL_UNSOL_STK_CALL_CONTROL_RESULT 11003
+#define RIL_UNSOL_ACB_INFO_CHANGED 11005
 #define RIL_UNSOL_DEVICE_READY_NOTI 11008
 #define RIL_UNSOL_GPS_NOTI 11009
 #define RIL_UNSOL_AM 11010
 #define RIL_UNSOL_DUN_PIN_CONTROL_SIGNAL 11011
 #define RIL_UNSOL_DATA_SUSPEND_RESUME 11012
 #define RIL_UNSOL_SAP 11013
+#define RIL_UNSOL_WB_AMR_STATE  11017
 #define RIL_UNSOL_UART 11020
 #define RIL_UNSOL_SIM_PB_READY 11021
 #define RIL_UNSOL_VE 11024
@@ -5888,11 +5896,7 @@ typedef struct {
 #define RIL_UNSOL_VOICE_RADIO_BEARER_HO_STATUS 11064
 #define RIL_UNSOL_CLM_NOTI 11065
 #define RIL_UNSOL_SIM_ICCID_NOTI 11066
-
-/* SNDMGR */
-
-#define RIL_UNSOL_SNDMGR_WB_AMR_REPORT 20017
-#define RIL_UNSOL_SNDMGR_CLOCK_CTRL 20022
+#define RIL_UNSOL_TIMER_STATUS_CHANGED_NOTI 10067
 
 /***********************************************************************/
 
