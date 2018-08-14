@@ -1,1 +1,1 @@
-chagallwifi (SM-T805) device repo for CyangenMod.
+Device tree for chagalllte (SM-T805)
