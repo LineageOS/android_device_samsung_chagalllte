@@ -1,0 +1,82 @@
+# Wifi Firmware
+etc/wifi/bcmdhd_apsta.bin
+etc/wifi/bcmdhd_apsta.bin_a0
+etc/wifi/bcmdhd_apsta.bin:etc/wifi/bcmdhd_apsta.bin_4354_a1
+etc/wifi/bcmdhd_mfg.bin
+etc/wifi/bcmdhd_mfg.bin_a0
+etc/wifi/bcmdhd_mfg.bin:etc/wifi/bcmdhd_mfg.bin_4354_a1
+etc/wifi/bcmdhd_sta.bin
+etc/wifi/bcmdhd_sta.bin_a0
+etc/wifi/bcmdhd_sta.bin:etc/wifi/bcmdhd_sta.bin_4354_a1
+etc/wifi/bcmdhd_ibss.bin
+etc/wifi/bcmdhd_ibss.bin_a0
+etc/wifi/bcmdhd_ibss.bin:etc/wifi/bcmdhd_ibss.bin_4354_a1
+etc/wifi/cred.conf
+etc/wifi/nvram_mfg.txt_4354_a0
+etc/wifi/nvram_mfg.txt_4354_a1
+etc/wifi/nvram_net.txt_4354_a0
+etc/wifi/nvram_net.txt_4354_a1
+etc/wifi/nvram_mfg.txt
+etc/wifi/nvram_net.txt
+
+# RIL
+bin/cbd
+lib/libsec-ril.so
+
+# GPS
+bin/gpsd
+lib/libwrappergps.so
+lib/hw/gps.default.so
+
+# Sensors
+lib/hw/sensors.universal5420.so
+lib/libak09911c.so
+
+# Bluetooth firmware
+vendor/firmware/bcm4350.hcd
+vendor/firmware/bcm4350_murata.hcd
+vendor/firmware/bcm4350_semco.hcd
+vendor/firmware/bcm4350_semcosh.hcd
+vendor/firmware/bcm4350_semcove.hcd
+
+# Samsung Exynos5 SoC series FIMC-IS driver firmware
+vendor/firmware/fimc_is_fw2_IMX134_EEPROM.bin
+vendor/firmware/setfile_6b2_eeprom.bin
+vendor/firmware/setfile_imx134_eeprom.bin
+
+# Fingerprint
+bin/vcsFPService
+lib/libfpasmtztransport.so
+lib/libvalAuth.so
+lib/libvcsfp.so
+lib/libvfmClient.so
+lib/libvfmtztransport.so
+
+# MobiCore
+app/mcRegistry/00060308060501020000000000000000.tlbin
+app/mcRegistry/02010000080300030000000000000000.tlbin
+app/mcRegistry/07010000000000000000000000000000.tlbin
+app/mcRegistry/07060000000000000000000000000000.tlbin
+app/mcRegistry/08130000000000000000000000000000.tlbin
+app/mcRegistry/ffffffff00000000000000000000000a.tlbin
+app/mcRegistry/ffffffff00000000000000000000000c.tlbin
+app/mcRegistry/ffffffff00000000000000000000000d.tlbin
+app/mcRegistry/ffffffff00000000000000000000000e.tlbin
+app/mcRegistry/ffffffff00000000000000000000000f.tlbin
+app/mcRegistry/ffffffff000000000000000000000003.tlbin
+app/mcRegistry/ffffffff000000000000000000000004.tlbin
+app/mcRegistry/ffffffff000000000000000000000005.tlbin
+app/mcRegistry/ffffffff000000000000000000000007.tlbin
+app/mcRegistry/ffffffff000000000000000000000008.tlbin
+app/mcRegistry/ffffffff000000000000000000000009.tlbin
+app/mcRegistry/ffffffff000000000000000000000010.tlbin
+app/mcRegistry/ffffffff000000000000000000000011.tlbin
+app/mcRegistry/ffffffff000000000000000000000012.tlbin
+app/mcRegistry/ffffffff000000000000000000000013.tlbin
+app/mcRegistry/ffffffff000000000000000000000017.tlbin
+app/mcRegistry/ffffffff000000000000000000000018.tlbin
+app/mcRegistry/ffffffff000000000000000000000041.tlbin
+app/mcRegistry/ffffffffd0000000000000000000000a.tlbin
+app/mcRegistry/ffffffffd0000000000000000000000e.tlbin
+app/mcRegistry/ffffffffd00000000000000000000004.tlbin
+app/mcRegistry/fffffffff0000000000000000000001e.tlbin
