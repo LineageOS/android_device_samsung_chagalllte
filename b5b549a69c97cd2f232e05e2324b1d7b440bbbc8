@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cf9940cc_803b0fbe",
+        "filename": "camera/CameraWrapper.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 15173
+      },
+      "writtenOn": "2018-08-30T03:00:07Z",
+      "side": 1,
+      "message": "Sinisa Sehovic is the author. This adds rayman as a copyright holder. AND it removes CM copyright. The latter is definitely not cool; if copyright attribution to CM was added in error then the burden of proof is on you to show why CM should not have copyright from 2012-2013,2015-2016.\n\nAll of this seems messed up.",
+      "range": {
+        "startLine": 2,
+        "startChar": 1,
+        "endLine": 3,
+        "endChar": 64
+      },
+      "revId": "b5b549a69c97cd2f232e05e2324b1d7b440bbbc8",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    }
+  ]
+}
