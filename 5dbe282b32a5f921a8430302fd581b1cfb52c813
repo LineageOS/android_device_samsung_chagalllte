@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b336a3db_822431be",
+        "filename": "overlay/packages/apps/Dialer/res/values/config.xml",
+        "patchSetId": 10
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 15173
+      },
+      "writtenOn": "2018-08-30T03:12:48Z",
+      "side": 1,
+      "message": "Copyright (C) 2018 The LineageOS Project",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 47
+      },
+      "revId": "5dbe282b32a5f921a8430302fd581b1cfb52c813",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    }
+  ]
+}
