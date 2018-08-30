@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2952a929_18d3c3e2",
+        "filename": "setup-makefiles.sh",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 15173
+      },
+      "writtenOn": "2018-08-30T03:17:24Z",
+      "side": 1,
+      "message": "How does changalllte exist prior to 2018?",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 47
+      },
+      "revId": "30110f09f86856321d287201014ef6e22de1df63",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4feff3e3_3c94bf4f",
+        "filename": "setup-makefiles.sh",
+        "patchSetId": 5
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 15173
+      },
+      "writtenOn": "2018-08-30T03:17:24Z",
+      "side": 1,
+      "message": "same",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 47
+      },
+      "revId": "30110f09f86856321d287201014ef6e22de1df63",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "85bf76d6_34972abf",
+        "filename": "setup-makefiles.sh",
+        "patchSetId": 5
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 15173
+      },
+      "writtenOn": "2018-08-30T03:17:24Z",
+      "side": 1,
+      "message": "same",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 76,
+        "endChar": 47
+      },
+      "revId": "30110f09f86856321d287201014ef6e22de1df63",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    }
+  ]
+}
